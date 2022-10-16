@@ -1,0 +1,11 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: Introduction
+chapters:
+- file: DataCleaning
+- file: DataOutagesAndStrikes
+- file: ActiveTrainsOverTime
+- file: KeyRouteAnalysis
+- file: NextSteps
