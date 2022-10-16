@@ -1,0 +1,74 @@
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/usr/local/lib/python3.9/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/usr/local/lib/python3.9/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/usr/local/lib/python3.9/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/usr/local/Cellar/python@3.9/3.9.9/Frameworks/Python.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 642, in run_until_complete
+    return future.result()
+  File "/usr/local/lib/python3.9/site-packages/nbclient/client.py", line 663, in async_execute
+    await self.async_execute_cell(
+  File "/usr/local/lib/python3.9/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/usr/local/lib/python3.9/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+%store -r train_timings
+
+# grab data associated with pitsea and benfleet
+pitsea_benfleet_events = train_timings.loc[(train_timings.planned_event_location == '51016') | (train_timings.planned_event_location == '51014')]
+
+# print('There are ' + str(len(pitsea_benfleet_events.signal.unique())) + ' signals at the pitsea or benfleet stations')
+# there are 18 signals at the pitsea or benfleet stations...
+
+# only those which arrive at benfleet and depart pitsea are valid
+pitsea_to_benfleet = pitsea_benfleet_events.loc[~(((pitsea_benfleet_events.planned_event_type == 'ARRIVAL')&(pitsea_benfleet_events.planned_event_location == '51016'))|((pitsea_benfleet_events.planned_event_type == 'DEPARTURE')&(pitsea_benfleet_events.planned_event_location == '51014')))]
+
+# sort on date and train id
+pitsea_to_benfleet.sort_values(['signal_date', 'train_id'], inplace=True)
+pitsea_to_benfleet.reset_index(drop=True, inplace=True)
+
+# get previous and next train id.. save rows whose train_id is same as previous and arrive at benfleet.. and save rows whose train id is same as next train_id and depart pitsea
+# this isnt a perfect science but it will work for the purposes of analysis
+# attempted to do this by tracking previous signal ids but was too difficult.
+pitsea_to_benfleet['previous_train_id'] = pitsea_to_benfleet['train_id'].shift(+1)
+pitsea_to_benfleet['next_train_id'] = pitsea_to_benfleet['train_id'].shift(-1)
+pitsea_to_benfleet = pitsea_to_benfleet.loc[((pitsea_to_benfleet['train_id']==pitsea_to_benfleet['previous_train_id'])&(pitsea_to_benfleet['planned_event_type']=='ARRIVAL'))|((pitsea_to_benfleet['train_id']==pitsea_to_benfleet['next_train_id'])&(pitsea_to_benfleet['planned_event_type']=='DEPARTURE')), :]
+
+# gather additional metrics for analysis
+pitsea_to_benfleet['previous_planned_event_time'] = pitsea_to_benfleet['planned_event_time'].shift(+1)
+pitsea_to_benfleet['planned_run_time'] = pitsea_to_benfleet.loc[pitsea_to_benfleet['planned_event_type'] == 'ARRIVAL']['planned_event_time'] - pitsea_to_benfleet.loc[pitsea_to_benfleet['planned_event_type'] == 'ARRIVAL']['previous_planned_event_time']
+
+pitsea_to_benfleet['previous_actual_event_time'] = pitsea_to_benfleet['actual_event_time'].shift(+1)
+pitsea_to_benfleet['actual_run_time'] = pitsea_to_benfleet.loc[pitsea_to_benfleet['planned_event_type'] == 'ARRIVAL']['actual_event_time'] - pitsea_to_benfleet.loc[pitsea_to_benfleet['planned_event_type'] == 'ARRIVAL']['previous_actual_event_time']
+
+pitsea_to_benfleet['actual_vs_planned'] = (pitsea_to_benfleet['actual_run_time'] - pitsea_to_benfleet['planned_run_time']).dt.total_seconds()
+# drop columns we dont need
+pitsea_to_benfleet.drop(['previous_planned_event_time', 'previous_actual_event_time'], axis=1, inplace=True)
+
+# eliminate outliers by runtime, anything over 400 seconds
+pitsea_to_benfleet.drop(pitsea_to_benfleet[pitsea_to_benfleet['actual_run_time'].dt.total_seconds() > 500].index, inplace = True)
+pitsea_to_benfleet.reset_index(drop=True, inplace=True)
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mModuleNotFoundError[0m                       Traceback (most recent call last)
+Cell [0;32mIn [1], line 3[0m
+[1;32m      1[0m [38;5;28;01mimport[39;00m [38;5;21;01mpandas[39;00m [38;5;28;01mas[39;00m [38;5;21;01mpd[39;00m
+[1;32m      2[0m [38;5;28;01mimport[39;00m [38;5;21;01mnumpy[39;00m [38;5;28;01mas[39;00m [38;5;21;01mnp[39;00m
+[0;32m----> 3[0m [38;5;28;01mimport[39;00m [38;5;21;01mmatplotlib[39;00m[38;5;21;01m.[39;00m[38;5;21;01mpyplot[39;00m [38;5;28;01mas[39;00m [38;5;21;01mplt[39;00m
+[1;32m      4[0m [38;5;28;01mimport[39;00m [38;5;21;01mseaborn[39;00m [38;5;28;01mas[39;00m [38;5;21;01msns[39;00m
+[1;32m      6[0m get_ipython()[38;5;241m.[39mrun_line_magic([38;5;124m'[39m[38;5;124mstore[39m[38;5;124m'[39m, [38;5;124m'[39m[38;5;124m-r train_timings[39m[38;5;124m'[39m)
+
+[0;31mModuleNotFoundError[0m: No module named 'matplotlib'
+ModuleNotFoundError: No module named 'matplotlib'
+

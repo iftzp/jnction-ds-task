@@ -1,0 +1,1047 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Data Outages and Strikes &#8212; Trenitalia c2c Limited | Initial Exploratory Data Analysis</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.svg"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Active Trains Over Time" href="ActiveTrainsOverTime.html" />
+    <link rel="prev" title="Data Cleaning" href="DataCleaning.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Trenitalia c2c Limited | Initial Exploratory Data Analysis</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="Introduction.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="DataCleaning.html">
+   Data Cleaning
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Data Outages and Strikes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ActiveTrainsOverTime.html">
+   Active Trains Over Time
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="KeyRouteAnalysis.html">
+   Key Route Analysis: Pitsea - Benfleet
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="NextSteps.html">
+   Next Steps
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/iftzp/jnction-task/main?urlpath=tree/book/DataOutagesAndStrikes.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/iftzp/jnction-task"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/iftzp/jnction-task/issues/new?title=Issue%20on%20page%20%2FDataOutagesAndStrikes.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/DataOutagesAndStrikes.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-outages">
+   Data Outages
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#daily-planned-event-metrics">
+     Daily Planned Event Metrics
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#daily-signal-metrics">
+     Daily Signal Metrics
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#signal-outages">
+     Signal Outages
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#planned-event-outages">
+     Planned Event Outages
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#strikes">
+   Strikes
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Data Outages and Strikes</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-outages">
+   Data Outages
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#daily-planned-event-metrics">
+     Daily Planned Event Metrics
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#daily-signal-metrics">
+     Daily Signal Metrics
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#signal-outages">
+     Signal Outages
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#planned-event-outages">
+     Planned Event Outages
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#strikes">
+   Strikes
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="data-outages-and-strikes">
+<h1>Data Outages and Strikes<a class="headerlink" href="#data-outages-and-strikes" title="Permalink to this headline">#</a></h1>
+<section id="data-outages">
+<h2>Data Outages<a class="headerlink" href="#data-outages" title="Permalink to this headline">#</a></h2>
+<p>Let’s see if there are any data outages throughout the four months.</p>
+<p>We know that there are no null values in the signal and signal_passing_time columns.</p>
+<p>However, we do know that there are some missing values in the other columns, such as the columns relating to planned events.</p>
+<p>Two types of outages:</p>
+<ul class="simple">
+<li><p>Signal Outages</p></li>
+<li><p>Event Planning Outages</p></li>
+</ul>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">store</span> -r train_timings
+
+<span class="c1"># we will create an event count dataframe showing planned event metrics for each day.. and also average planned event metrics</span>
+<span class="c1"># we will do the same for signals</span>
+<span class="c1"># we will also create a dataframe to hold signal to planned event ratios</span>
+
+<span class="c1"># create data for each day</span>
+<span class="n">train_timings_datetime_index</span> <span class="o">=</span> <span class="n">train_timings</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;signal_passing_time&#39;</span><span class="p">])</span>
+<span class="n">event_count_daily</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">event_count_daily</span><span class="p">[</span><span class="s1">&#39;event_diff_mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_timings_datetime_index</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Grouper</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">()[</span><span class="s1">&#39;event_diff_seconds&#39;</span><span class="p">]</span>
+<span class="n">event_count_daily</span><span class="p">[</span><span class="s1">&#39;event_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_timings_datetime_index</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Grouper</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">()[</span><span class="s1">&#39;planned_event_type&#39;</span><span class="p">]</span>
+
+<span class="n">unique_signals_daily</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">unique_signals_daily</span><span class="p">[</span><span class="s1">&#39;signal_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_timings_datetime_index</span><span class="p">[[</span><span class="s1">&#39;signal&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Grouper</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="o">.</span><span class="n">nunique</span><span class="p">)</span>
+<span class="n">unique_signals_daily</span><span class="p">[</span><span class="s1">&#39;signals_recorded&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_timings_datetime_index</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Grouper</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">()[</span><span class="s1">&#39;signal&#39;</span><span class="p">]</span>
+<span class="n">unique_signals_daily</span><span class="p">[</span><span class="s1">&#39;percent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unique_signals_daily</span><span class="p">[</span><span class="s1">&#39;signal_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mi">343</span><span class="p">)</span>
+
+<span class="n">signal_to_planned_event_ratio</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">signal_to_planned_event_ratio</span><span class="p">[</span><span class="s1">&#39;ratio&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unique_signals_daily</span><span class="p">[</span><span class="s1">&#39;signal_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">event_count_daily</span><span class="p">[</span><span class="s1">&#39;event_count&#39;</span><span class="p">])</span>
+
+<span class="c1"># add the average data</span>
+<span class="n">event_count_daily_mean</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">event_count_daily_mean</span><span class="p">[</span><span class="s1">&#39;event_count_day_of_week_mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_count_daily</span><span class="p">[</span><span class="s1">&#39;event_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">event_count_daily</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">day_name</span><span class="p">())</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">event_count_daily</span><span class="p">[</span><span class="s1">&#39;day_of_week&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_count_daily</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">day_name</span><span class="p">()</span>
+<span class="n">event_count_daily</span> <span class="o">=</span> <span class="n">event_count_daily</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">event_count_daily_mean</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span><span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;day_of_week&#39;</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">event_count_daily</span>
+
+<span class="n">unique_signals_daily_mean</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">unique_signals_daily_mean</span><span class="p">[</span><span class="s1">&#39;signal_count_day_of_week_mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unique_signals_daily</span><span class="p">[</span><span class="s1">&#39;signal_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">unique_signals_daily</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">day_name</span><span class="p">())</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">unique_signals_daily_mean</span><span class="p">[</span><span class="s1">&#39;signals_recorded_day_of_week_mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unique_signals_daily</span><span class="p">[</span><span class="s1">&#39;signals_recorded&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">unique_signals_daily</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">day_name</span><span class="p">())</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">unique_signals_daily</span><span class="p">[</span><span class="s1">&#39;day_of_week&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_count_daily</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">day_name</span><span class="p">()</span>
+<span class="n">unique_signals_daily</span> <span class="o">=</span> <span class="n">unique_signals_daily</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">unique_signals_daily_mean</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span><span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;day_of_week&#39;</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="n">run_line_magic</span><span class="p">(</span><span class="s1">&#39;store&#39;</span><span class="p">,</span> <span class="s1">&#39;-r train_timings&#39;</span><span class="p">)</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;seaborn&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<section id="daily-planned-event-metrics">
+<h3>Daily Planned Event Metrics<a class="headerlink" href="#daily-planned-event-metrics" title="Permalink to this headline">#</a></h3>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">event_count_daily</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>event_diff_mean</th>
+      <th>event_count</th>
+      <th>day_of_week</th>
+      <th>event_count_day_of_week_mean</th>
+    </tr>
+    <tr>
+      <th>signal_passing_time</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2022-04-01 00:00:00+00:00</th>
+      <td>-20.740088</td>
+      <td>8399</td>
+      <td>Friday</td>
+      <td>8157.500000</td>
+    </tr>
+    <tr>
+      <th>2022-04-02 00:00:00+00:00</th>
+      <td>-36.036388</td>
+      <td>7530</td>
+      <td>Saturday</td>
+      <td>7516.722222</td>
+    </tr>
+    <tr>
+      <th>2022-04-03 00:00:00+00:00</th>
+      <td>-40.821820</td>
+      <td>3373</td>
+      <td>Sunday</td>
+      <td>4146.222222</td>
+    </tr>
+    <tr>
+      <th>2022-04-04 00:00:00+00:00</th>
+      <td>-25.550758</td>
+      <td>8176</td>
+      <td>Monday</td>
+      <td>7674.117647</td>
+    </tr>
+    <tr>
+      <th>2022-04-05 00:00:00+00:00</th>
+      <td>-37.276544</td>
+      <td>8288</td>
+      <td>Tuesday</td>
+      <td>7814.470588</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2022-07-27 00:00:00+00:00</th>
+      <td>20.173990</td>
+      <td>2253</td>
+      <td>Wednesday</td>
+      <td>7939.352941</td>
+    </tr>
+    <tr>
+      <th>2022-07-28 00:00:00+00:00</th>
+      <td>-52.023313</td>
+      <td>7764</td>
+      <td>Thursday</td>
+      <td>7875.058824</td>
+    </tr>
+    <tr>
+      <th>2022-07-29 00:00:00+00:00</th>
+      <td>-72.777742</td>
+      <td>9192</td>
+      <td>Friday</td>
+      <td>8157.500000</td>
+    </tr>
+    <tr>
+      <th>2022-07-30 00:00:00+00:00</th>
+      <td>-10.863665</td>
+      <td>7907</td>
+      <td>Saturday</td>
+      <td>7516.722222</td>
+    </tr>
+    <tr>
+      <th>2022-07-31 00:00:00+00:00</th>
+      <td>-5.821949</td>
+      <td>4875</td>
+      <td>Sunday</td>
+      <td>4146.222222</td>
+    </tr>
+  </tbody>
+</table>
+<p>122 rows × 4 columns</p>
+</div></div></div>
+</div>
+</section>
+<section id="daily-signal-metrics">
+<h3>Daily Signal Metrics<a class="headerlink" href="#daily-signal-metrics" title="Permalink to this headline">#</a></h3>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">unique_signals_daily</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>signal_count</th>
+      <th>signals_recorded</th>
+      <th>percent</th>
+      <th>day_of_week</th>
+      <th>signal_count_day_of_week_mean</th>
+      <th>signals_recorded_day_of_week_mean</th>
+    </tr>
+    <tr>
+      <th>signal_passing_time</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2022-04-01 00:00:00+00:00</th>
+      <td>288</td>
+      <td>24201</td>
+      <td>0.839650</td>
+      <td>Friday</td>
+      <td>284.166667</td>
+      <td>23395.333333</td>
+    </tr>
+    <tr>
+      <th>2022-04-02 00:00:00+00:00</th>
+      <td>267</td>
+      <td>19904</td>
+      <td>0.778426</td>
+      <td>Saturday</td>
+      <td>264.055556</td>
+      <td>20064.833333</td>
+    </tr>
+    <tr>
+      <th>2022-04-03 00:00:00+00:00</th>
+      <td>241</td>
+      <td>8847</td>
+      <td>0.702624</td>
+      <td>Sunday</td>
+      <td>253.833333</td>
+      <td>11812.666667</td>
+    </tr>
+    <tr>
+      <th>2022-04-04 00:00:00+00:00</th>
+      <td>284</td>
+      <td>23404</td>
+      <td>0.827988</td>
+      <td>Monday</td>
+      <td>283.176471</td>
+      <td>21949.764706</td>
+    </tr>
+    <tr>
+      <th>2022-04-05 00:00:00+00:00</th>
+      <td>286</td>
+      <td>23604</td>
+      <td>0.833819</td>
+      <td>Tuesday</td>
+      <td>286.764706</td>
+      <td>22487.000000</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2022-07-27 00:00:00+00:00</th>
+      <td>265</td>
+      <td>6395</td>
+      <td>0.772595</td>
+      <td>Wednesday</td>
+      <td>286.470588</td>
+      <td>22740.705882</td>
+    </tr>
+    <tr>
+      <th>2022-07-28 00:00:00+00:00</th>
+      <td>287</td>
+      <td>21699</td>
+      <td>0.836735</td>
+      <td>Thursday</td>
+      <td>284.823529</td>
+      <td>22533.941176</td>
+    </tr>
+    <tr>
+      <th>2022-07-29 00:00:00+00:00</th>
+      <td>284</td>
+      <td>26081</td>
+      <td>0.827988</td>
+      <td>Friday</td>
+      <td>284.166667</td>
+      <td>23395.333333</td>
+    </tr>
+    <tr>
+      <th>2022-07-30 00:00:00+00:00</th>
+      <td>257</td>
+      <td>21155</td>
+      <td>0.749271</td>
+      <td>Saturday</td>
+      <td>264.055556</td>
+      <td>20064.833333</td>
+    </tr>
+    <tr>
+      <th>2022-07-31 00:00:00+00:00</th>
+      <td>246</td>
+      <td>13302</td>
+      <td>0.717201</td>
+      <td>Sunday</td>
+      <td>253.833333</td>
+      <td>11812.666667</td>
+    </tr>
+  </tbody>
+</table>
+<p>122 rows × 6 columns</p>
+</div></div></div>
+</div>
+<p>With this data we can compare</p>
+<ul class="simple">
+<li><p>Daily Active Signal Counts vs Average by Day of Week</p></li>
+</ul>
+<p>This should show us if there are any particular days where the number of active signals were much lower than the average for that day of the week.</p>
+<ul class="simple">
+<li><p>Daily Event Counts vs Average by Day of Week</p></li>
+</ul>
+<p>This should show us if there are any particular days where the number of events planned were much lower than the average number planned for that day of the week.</p>
+<ul class="simple">
+<li><p>Daily Unique Signal Count : Daily Planned Event Count Ratio</p></li>
+</ul>
+<p>This should show us if there were any days where the number of active signals did not correspond to the number of events planned.</p>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define some functions to plot different types of time-series</span>
+
+<span class="k">def</span> <span class="nf">plot_series</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">series</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([]),</span> 
+                <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots a certain time-series which has either been loaded in a dataframe</span>
+<span class="sd">    and which constitutes one of its columns or it a custom pandas series </span>
+<span class="sd">    created by the user. The user can define either the &#39;df&#39; and the &#39;column&#39; </span>
+<span class="sd">    or the &#39;series&#39; and additionally, can also define the &#39;label&#39;, the </span>
+<span class="sd">    &#39;ylabel&#39;, the &#39;title&#39;, the &#39;start&#39; and the &#39;end&#39; of the plot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">column</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">][</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">series</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">label</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ax</span>
+
+<span class="k">def</span> <span class="nf">plot_series_double</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">column1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">column2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">series</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([]),</span> 
+                <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">column1</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">column1</span><span class="p">][</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">column1</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">column2</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">column2</span><span class="p">][</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">column2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">series</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ax</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/ivan/opt/anaconda3/envs/3.7/lib/python3.7/site-packages/ipykernel_launcher.py:3: DeprecationWarning: The default dtype for empty Series will be &#39;object&#39; instead of &#39;float64&#39; in a future version. Specify a dtype explicitly to silence this warning.
+  This is separate from the ipykernel package so we can avoid doing imports until
+/Users/ivan/opt/anaconda3/envs/3.7/lib/python3.7/site-packages/ipykernel_launcher.py:28: DeprecationWarning: The default dtype for empty Series will be &#39;object&#39; instead of &#39;float64&#39; in a future version. Specify a dtype explicitly to silence this warning.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="signal-outages">
+<h3>Signal Outages<a class="headerlink" href="#signal-outages" title="Permalink to this headline">#</a></h3>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">plot_series_double</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">unique_signals_daily</span><span class="p">,</span> <span class="n">column1</span><span class="o">=</span><span class="s1">&#39;signal_count&#39;</span><span class="p">,</span> <span class="n">column2</span><span class="o">=</span><span class="s1">&#39;signal_count_day_of_week_mean&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Number of Signals&#39;</span><span class="p">,</span>
+                 <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Number of Signals Recorded Daily&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">24</span><span class="o">*</span><span class="mi">7</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/DataOutagesAndStrikes_10_0.png" src="_images/DataOutagesAndStrikes_10_0.png" />
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">plot_series</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">signal_to_planned_event_ratio</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="s1">&#39;ratio&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Signal:Planned Event&#39;</span><span class="p">,</span>
+                 <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Ratio of Recorded Signals to Planned Events&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">24</span><span class="o">*</span><span class="mi">7</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/DataOutagesAndStrikes_11_0.png" src="_images/DataOutagesAndStrikes_11_0.png" />
+</div>
+</div>
+<p>The most obvious takeaway from the Number of Signals recorded daily is that there are always far fewer recorded signals on a Sunday on average.</p>
+<p>However, there does seem to be much lower numbers of recordings on 7th/8th April, 1st May and the 22nd/23rd May.<br />
+One other recording worth noting would be midweek around the 22nd of July.</p>
+<p>When we line this up with the ratio of recorded signals to planned events, we can see that this number does seem to spike weekly on Sundays.</p>
+<p>The spike on the 1st of May could be because the number of planned events was much lower, because of the May Day bank holiday.<br />
+However, it still stands out and could possibly indicate scheduled maintenance intentionally timed to avoid disruption.</p>
+<p>The other most considerable spike in the Ratio of recorded signals to planned events is midweek around the 22nd of July.
+This is much more likely to be an unplanned signal outage as it is midweek.</p>
+<p>We can also see the outlying values in the week of the 20th of June which are related to the <a class="reference external" href="#strikes">Strikes</a></p>
+</section>
+<section id="planned-event-outages">
+<h3>Planned Event Outages<a class="headerlink" href="#planned-event-outages" title="Permalink to this headline">#</a></h3>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">plot_series_double</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">event_count_daily</span><span class="p">,</span> <span class="n">column1</span><span class="o">=</span><span class="s1">&#39;event_count&#39;</span><span class="p">,</span> <span class="n">column2</span><span class="o">=</span><span class="s1">&#39;event_count_day_of_week_mean&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Number of Planned Events&#39;</span><span class="p">,</span>
+                 <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Number of Planned Events Daily&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">24</span><span class="o">*</span><span class="mi">7</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/DataOutagesAndStrikes_14_0.png" src="_images/DataOutagesAndStrikes_14_0.png" />
+</div>
+</div>
+<p>There doesn’t seem to be many significant decreases in the number of planned events.
+On the 1st of  May there is a lower drop which does indicate that this was likely to facilitate planned maintenance.</p>
+<p>However, there does seem to be a drop in planned events midweek on the 22nd of July. If the signal outages identified earlier were unplanned, the planned events would remain normal.</p>
+<p>This indicates that there must have been scheduled signal outages midweek on the 22nd of July also.</p>
+</section>
+</section>
+<section id="strikes">
+<h2>Strikes<a class="headerlink" href="#strikes" title="Permalink to this headline">#</a></h2>
+<p>Strike dates were announced for 21st, 23rd and 25th June by Network Rail.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we will isolate the strike event data, and merge it with our averages so that it can be compared easily</span>
+<span class="c1"># we will drop duplicate columns and columns that are not relevant</span>
+
+<span class="c1"># get the strike data</span>
+<span class="n">strike_event_count_daily</span> <span class="o">=</span> <span class="n">event_count_daily</span><span class="p">[</span><span class="s1">&#39;2022-06-20&#39;</span><span class="p">:</span><span class="s1">&#39;2022-06-26&#39;</span><span class="p">]</span>
+<span class="n">strike_unique_signals_daily</span> <span class="o">=</span> <span class="n">unique_signals_daily</span><span class="p">[</span><span class="s1">&#39;2022-06-20&#39;</span><span class="p">:</span><span class="s1">&#39;2022-06-26&#39;</span><span class="p">]</span>
+
+<span class="n">strike_event_count_daily</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">&#39;event_diff_mean&#39;</span><span class="p">:</span><span class="s1">&#39;event_diff_mean_strike_day&#39;</span><span class="p">,</span> <span class="s1">&#39;event_count&#39;</span><span class="p">:</span><span class="s1">&#39;event_count_strike_day&#39;</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">strike_unique_signals_daily</span> <span class="o">=</span> <span class="n">unique_signals_daily</span><span class="p">[</span><span class="s1">&#39;2022-06-20&#39;</span><span class="p">:</span><span class="s1">&#39;2022-06-26&#39;</span><span class="p">]</span>
+<span class="n">strike_unique_signals_daily</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">&#39;signal_count&#39;</span><span class="p">:</span><span class="s1">&#39;signal_count_strike_day&#39;</span><span class="p">,</span> <span class="s1">&#39;signals_recorded&#39;</span><span class="p">:</span><span class="s1">&#39;signals_recorded_strike_day&#39;</span><span class="p">,</span> <span class="s1">&#39;percent&#39;</span><span class="p">:</span><span class="s1">&#39;percent_strike_day&#39;</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># add the average data</span>
+<span class="n">mean_event_count_daily</span> <span class="o">=</span> <span class="n">event_count_daily</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">event_count_daily</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">day_name</span><span class="p">())</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">mean_event_count_daily</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;event_count&#39;</span><span class="p">,</span> <span class="s1">&#39;event_count_day_of_week_mean&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">strike_event_count_daily</span> <span class="o">=</span> <span class="n">strike_event_count_daily</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">mean_event_count_daily</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span><span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;day_of_week&#39;</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">mean_unique_signals_daily</span> <span class="o">=</span> <span class="n">unique_signals_daily</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">unique_signals_daily</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">day_name</span><span class="p">())</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">mean_unique_signals_daily</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;signal_count_day_of_week_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;signals_recorded_day_of_week_mean&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">mean_unique_signals_daily</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">&#39;percent&#39;</span><span class="p">:</span><span class="s1">&#39;percent_day_of_week_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;signal_count&#39;</span><span class="p">:</span><span class="s1">&#39;signal_count_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;signals_recorded&#39;</span><span class="p">:</span><span class="s1">&#39;signals_recorded_mean&#39;</span><span class="p">,</span> <span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">strike_unique_signals_daily</span> <span class="o">=</span> <span class="n">strike_unique_signals_daily</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">mean_unique_signals_daily</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span><span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;day_of_week&#39;</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/ivan/opt/anaconda3/envs/3.7/lib/python3.7/site-packages/pandas/core/frame.py:5047: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  errors=errors,
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">plot_series_double</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">strike_event_count_daily</span><span class="p">,</span> <span class="n">column1</span><span class="o">=</span><span class="s1">&#39;event_diff_mean_strike_day&#39;</span><span class="p">,</span> <span class="n">column2</span><span class="o">=</span><span class="s1">&#39;event_diff_mean&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Seconds&#39;</span><span class="p">,</span>
+                 <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Planned vs Actual Event Time Difference (Negative values indicate a late train)&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">24</span><span class="o">*</span><span class="mi">7</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/DataOutagesAndStrikes_19_0.png" src="_images/DataOutagesAndStrikes_19_0.png" />
+</div>
+</div>
+<p>On average, actual events are delayed by around 30-50 seconds.<br />
+We can see that on the strike days, there was high variance. It seems that appropriate sceduling was made on the 21st and 23rd, but not on the 25th where the average delay was about 3 minutes.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">plot_series_double</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">strike_event_count_daily</span><span class="p">,</span> <span class="n">column1</span><span class="o">=</span><span class="s1">&#39;event_count_day_of_week_mean&#39;</span><span class="p">,</span> <span class="n">column2</span><span class="o">=</span><span class="s1">&#39;event_count_strike_day&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Number of Events&#39;</span><span class="p">,</span>
+                 <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Number of events on Strike Days&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">24</span><span class="o">*</span><span class="mi">7</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/DataOutagesAndStrikes_21_0.png" src="_images/DataOutagesAndStrikes_21_0.png" />
+</div>
+</div>
+<p>The affect of the strike is obvious here, with the number of events being much lower than the weekly average on strike days.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="DataCleaning.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Data Cleaning</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="ActiveTrainsOverTime.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Active Trains Over Time</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Ivan Fitzpatrick<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

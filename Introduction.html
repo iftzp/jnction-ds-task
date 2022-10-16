@@ -1,0 +1,988 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Introduction &#8212; Trenitalia c2c Limited | Initial Exploratory Data Analysis</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.svg"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Data Cleaning" href="DataCleaning.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Trenitalia c2c Limited | Initial Exploratory Data Analysis</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1 current active">
+                <a class="reference internal" href="#">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="DataCleaning.html">
+   Data Cleaning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="DataOutagesAndStrikes.html">
+   Data Outages and Strikes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ActiveTrainsOverTime.html">
+   Active Trains Over Time
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="KeyRouteAnalysis.html">
+   Key Route Analysis: Pitsea - Benfleet
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="NextSteps.html">
+   Next Steps
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/iftzp/jnction-task/main?urlpath=tree/book/Introduction.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/iftzp/jnction-task"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/iftzp/jnction-task/issues/new?title=Issue%20on%20page%20%2FIntroduction.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/Introduction.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#file-stats">
+   File Stats
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#unique-values">
+     Unique Values
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missing-and-duplicate-values">
+     Missing and Duplicate Values
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#expanding-the-dataset">
+   Expanding the dataset
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Introduction</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#file-stats">
+   File Stats
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#unique-values">
+     Unique Values
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missing-and-duplicate-values">
+     Missing and Duplicate Values
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#expanding-the-dataset">
+   Expanding the dataset
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h1>
+<p>This document contains the Initial Exploratory Data Analysis carried out by <a class="reference external" href="https://jnction.uk/">JNCTION</a> on behalf of <a class="reference external" href="https://www.c2c-online.co.uk/">Trenitalia c2c Limited T/A c2c</a>.</p>
+<hr class="docutils" />
+<p>c2c required initial insights regarding some key aspects of their business, including:</p>
+<ul class="simple">
+<li><p>Data Outages and Strikes</p></li>
+<li><p>Active Trains Over Time</p></li>
+<li><p>Key Route: Pitsea - Benfleet</p></li>
+</ul>
+<p>Which can be found in the following pages of this document.</p>
+<p>JNCTION have also suggested some future work based on this analysis which we believe will assist in optimising resource allocation and providing a better customer experience.</p>
+<hr class="docutils" />
+<p>The provided csv file <strong>train_timings_data.csv</strong> contains 4 months of data (125 days) between April 1 2022 and July 31 2022 for trains running in the area east of London.<br />
+It contains a total of 2,520,092 records.</p>
+<p>The columns included in the file are as follows:</p>
+<ul class="simple">
+<li><p><strong>origin_date</strong>: the date the record was issued</p></li>
+<li><p><strong>train_id</strong>: the train identification number</p></li>
+<li><p><strong>signal</strong>: the railway signal identification number</p></li>
+<li><p><strong>signal_passing_time</strong>: the time the railway signal was passed</p></li>
+<li><p><strong>planned_event_type</strong>: this field is populated if the record corresponds to a departure or arrival from a station (or arrival at destination)</p></li>
+<li><p><strong>planned_event_location</strong>: the location of the event in the form of a STANOX code is recorded (if the record corresponds to a planned event)</p></li>
+<li><p><strong>planned_event_time</strong>: the intended time for the passing of the railway signal (if the record corresponds to a planned event)</p></li>
+<li><p><strong>actual_event_time</strong>: the actual time the passing of the railway signal occured (if the record corresponds to a planned event)</p></li>
+</ul>
+<p>In summary:<br />
+Each row represents a record of a train passing a railway signal, with some rows containing information relating to a planned event (departure or arrival from a station).</p>
+<hr class="docutils" />
+<section id="file-stats">
+<h2>File Stats<a class="headerlink" href="#file-stats" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-input tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">reset</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="kn">import</span> <span class="nn">plotly.offline</span> <span class="k">as</span> <span class="nn">py</span>
+<span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">from</span> <span class="nn">convertbng.util</span> <span class="kn">import</span> <span class="n">convert_etrs89_to_lonlat</span>
+
+<span class="n">train_timings</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../data/train_timings_data.csv&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;origin_date&#39;</span><span class="p">,</span> <span class="s1">&#39;signal_passing_time&#39;</span><span class="p">,</span> <span class="s1">&#39;planned_event_time&#39;</span><span class="p">,</span> <span class="s1">&#39;actual_event_time&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;planned_event_location&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="n">run_line_magic</span><span class="p">(</span><span class="s1">&#39;reset&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">import</span> <span class="nn">plotly.offline</span> <span class="k">as</span> <span class="nn">py</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;plotly&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<section id="unique-values">
+<h3>Unique Values<a class="headerlink" href="#unique-values" title="Permalink to this headline">#</a></h3>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the number of unique records in each column</span>
+<span class="c1"># for column in train_timings.columns:</span>
+<span class="c1">#     print(column + &#39;: &#39; + str(len(train_timings[column].unique())))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>origin_date: 125 unique values (124 without NaN)</p></li>
+<li><p>train_id: 36091 unique values (36090 without NaN)</p></li>
+<li><p>signal: 343 unique values</p></li>
+<li><p>signal_passing_time: 2160710 unique values</p></li>
+<li><p>planned_event_type: 4 unique values (3 without NaN)</p></li>
+<li><p>planned_event_location: 27 unique values (26 without NaN)</p></li>
+<li><p>planned_event_time: 279172 unique values (279171 without NaN)</p></li>
+<li><p>actual_event_time: 843325 unique values (843324 without NaN)</p></li>
+</ul>
+</section>
+<section id="missing-and-duplicate-values">
+<h3>Missing and Duplicate Values<a class="headerlink" href="#missing-and-duplicate-values" title="Permalink to this headline">#</a></h3>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;There are </span><span class="si">{}</span><span class="s1"> missing values or NaNs in train_timings_data.csv.&#39;</span>
+      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_timings</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">sum</span><span class="p">()))</span>
+
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of missing values in each column:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">train_timings</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>There are 6569326 missing values or NaNs in train_timings_data.csv.
+
+Number of missing values in each column:
+origin_date                 22319
+train_id                    22319
+signal                          0
+signal_passing_time             0
+planned_event_type        1631172
+planned_event_location    1631172
+planned_event_time        1631172
+actual_event_time         1631172
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temp_train_timings</span> <span class="o">=</span> <span class="n">train_timings</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;There are </span><span class="si">{}</span><span class="s1"> duplicate rows in train_timings_data.csv based on all columns.&#39;</span>
+      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">temp_train_timings</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>There are 318 duplicate rows in train_timings_data.csv based on all columns.
+</pre></div>
+</div>
+</div>
+</div>
+<p>In total, there are <strong>6,569,326 missing values</strong> or NaNs in train_timings_data.csv.<br />
+However, we know this is not an accurate measure as half of the columns are empty when the signal is not departing or arriving at a station.<br />
+When we look at the ‘origin_date’ column, we can see that there are 22,319 values missing.</p>
+</section>
+</section>
+<section id="expanding-the-dataset">
+<h2>Expanding the dataset<a class="headerlink" href="#expanding-the-dataset" title="Permalink to this headline">#</a></h2>
+<p>In order to help with readaibility and understanding of the dataset, we have merged data from some other datasets.<br />
+We want two main things:</p>
+<ul class="simple">
+<li><p>Longitude and Latitude to be able to create a simple map of the stations in the dataset</p></li>
+<li><p>Station Names to know which station we are looking at when analysing data</p></li>
+</ul>
+<p>We used the <a class="reference external" href="https://wiki.openraildata.com/index.php?title=Reference_Data">CORPUS</a> (Codes for Operations, Retail &amp; Planning – a Unified Solution) dataset to convert stanox to TIPLOC codes.<br />
+Then, we obtained Eastings and Northings from <a class="reference external" href="https://wiki.openraildata.com/index.php?title=File:TIPLOC_Eastings_and_Northings.xlsx.gz">this</a> dataset.<br />
+We converted these to Longitude and Latitude Coordinates.<br />
+We also merged the data with a <a class="reference external" href="https://beta-naptan.dft.gov.uk/">NaPTAN</a> file from 2016 which also contains STANOX Codes to get readable station names.</p>
+<p>For missing station names, we can use <a class="reference external" href="http://www.railwaycodes.org.uk/crs/crs0.shtm">this</a> website.<br />
+For missing station coordinates, we will use Google Maps.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we will join the data with CORPUS to get tiploc.</span>
+<span class="c1"># Then we will join the data with NaPTAN. This will also give us the names of each stop</span>
+<span class="c1"># Then we can create a map of the coordinates</span>
+
+<span class="c1"># get unique stations in dataset</span>
+<span class="n">unique_stanox_values</span> <span class="o">=</span> <span class="n">train_timings</span><span class="o">.</span><span class="n">planned_event_location</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<span class="n">stanox_map_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;dataset_stations&#39;</span><span class="p">:</span> <span class="n">unique_stanox_values</span><span class="p">})</span>
+<span class="n">stanox_map_data</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># get and merge corpus</span>
+<span class="n">corpus</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="s1">&#39;../data/CORPUSExtract.json&#39;</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">)</span>
+<span class="n">stanox_map_data</span> <span class="o">=</span> <span class="n">stanox_map_data</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span><span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;dataset_stations&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;STANOX&#39;</span><span class="p">)</span>
+
+<span class="c1"># get and merge naptan 2016</span>
+<span class="n">naptan_2016</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../data/NaPTAN-2016.csv&#39;</span><span class="p">)</span>
+<span class="n">stanox_map_data</span> <span class="o">=</span> <span class="n">stanox_map_data</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">naptan_2016</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span><span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;TIPLOC&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;TiplocCode&#39;</span><span class="p">)</span>
+
+<span class="c1"># get and merge tiploc EN</span>
+<span class="n">tiploc_EN</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;../data/TIPLOC Eastings and Northings.xlsx&#39;</span><span class="p">)</span>
+<span class="n">stanox_map_data</span> <span class="o">=</span> <span class="n">stanox_map_data</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">tiploc_EN</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span><span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;TIPLOC&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;TIPLOC&#39;</span><span class="p">)</span>
+
+<span class="c1"># lets drop all columns apart from dataset_stations, StationName, Easting, Northing. We will keep NLCDESC too as our dataframe is still missing some of the values we want..</span>
+<span class="n">stanox_map_data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">stanox_map_data</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;dataset_stations&#39;</span><span class="p">,</span> <span class="s1">&#39;StationName&#39;</span><span class="p">,</span> <span class="s1">&#39;EASTING&#39;</span><span class="p">,</span> <span class="s1">&#39;NORTHING&#39;</span><span class="p">,</span> <span class="s1">&#39;NLCDESC&#39;</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># convert EN to LL</span>
+<span class="c1"># using this function isn&#39;t super accurate, but it will do for the purposes of simple visualisation</span>
+<span class="c1"># if more accurate coordinates are needed convert_to_lonlat can be used, but its takes a long time.</span>
+<span class="n">lat_long</span> <span class="o">=</span> <span class="n">convert_etrs89_to_lonlat</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">stanox_map_data</span><span class="p">[</span><span class="s1">&#39;EASTING&#39;</span><span class="p">]),</span> <span class="nb">list</span><span class="p">(</span><span class="n">stanox_map_data</span><span class="p">[</span><span class="s1">&#39;NORTHING&#39;</span><span class="p">]));</span> <span class="c1"># close enough</span>
+<span class="n">stanox_map_data</span><span class="p">[</span><span class="s1">&#39;LONGITUDE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lat_long</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">stanox_map_data</span><span class="p">[</span><span class="s1">&#39;LATITUDE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lat_long</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># drop duplicates on dataset stations</span>
+<span class="n">stanox_map_data</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;dataset_stations&#39;</span><span class="p">],</span> <span class="n">keep</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># we will fill the rest manually. found on http://www.railwaycodes.org.uk/crs/crsg.shtm and google maps</span>
+<span class="n">stanox_map_data</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;StationName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Shoeburyness Depot London End Junction&#39;</span>
+<span class="n">stanox_map_data</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="s1">&#39;StationName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Barking Station Junction&#39;</span>
+<span class="n">stanox_map_data</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">21</span><span class="p">,</span> <span class="s1">&#39;StationName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Gas Factory Junction&#39;</span>
+<span class="n">stanox_map_data</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">23</span><span class="p">,</span> <span class="s1">&#39;StationName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Christian Street Junction&#39;</span>
+<span class="n">stanox_map_data</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="s1">&#39;StationName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;East Ham Electric Multiple Unit Depot&#39;</span>
+<span class="n">stanox_map_data</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">26</span><span class="p">,</span> <span class="s1">&#39;StationName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Shoeburyness Carriage Servicing Depot&#39;</span>
+<span class="n">stanox_map_data</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">29</span><span class="p">,</span> <span class="s1">&#39;StationName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Gas Factory Loop&#39;</span>
+
+<span class="n">stanox_map_data</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;LONGITUDE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0.6406116596973183&#39;</span>
+<span class="n">stanox_map_data</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;LATITUDE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;51.54120825152502&#39;</span>
+
+<span class="n">stanox_map_data</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;LONGITUDE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0.710359938504039&#39;</span>
+<span class="n">stanox_map_data</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;LATITUDE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;51.53721361264267&#39;</span>
+
+<span class="n">stanox_map_data</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="s1">&#39;LONGITUDE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0.4573321689628452&#39;</span>
+<span class="n">stanox_map_data</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="s1">&#39;LATITUDE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;51.5681286353167&#39;</span>
+
+<span class="c1"># we can drop easting, northing and nlcdesc</span>
+<span class="n">stanox_map_data</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;EASTING&#39;</span><span class="p">,</span> <span class="s1">&#39;NORTHING&#39;</span><span class="p">,</span> <span class="s1">&#39;NLCDESC&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># merge this information to our main dataframe in case we want to use it later. it will also help with readability</span>
+<span class="n">train_timings</span> <span class="o">=</span> <span class="n">train_timings</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">stanox_map_data</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span><span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;planned_event_location&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;dataset_stations&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Stations in the Dataset with coordinates&quot;</span><span class="p">)</span>
+<span class="n">stanox_map_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Stations in the Dataset with coordinates
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>dataset_stations</th>
+      <th>StationName</th>
+      <th>LONGITUDE</th>
+      <th>LATITUDE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>51013</td>
+      <td>Leigh-on-Sea Rail Station</td>
+      <td>0.640612</td>
+      <td>51.541208</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>51011</td>
+      <td>Chalkwell Rail Station</td>
+      <td>0.670312</td>
+      <td>51.537902</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>51009</td>
+      <td>Westcliff-on-Sea Rail Station</td>
+      <td>0.693012</td>
+      <td>51.536672</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>51007</td>
+      <td>Southend Central Rail Station</td>
+      <td>0.710360</td>
+      <td>51.537214</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>51005</td>
+      <td>Southend East Rail Station</td>
+      <td>0.732399</td>
+      <td>51.538144</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>51004</td>
+      <td>Thorpe Bay Rail Station</td>
+      <td>0.763447</td>
+      <td>51.536895</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>50499</td>
+      <td>Shoeburyness Depot London End Junction</td>
+      <td>0.785681</td>
+      <td>51.533976</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>51001</td>
+      <td>Shoeburyness Rail Station</td>
+      <td>0.796306</td>
+      <td>51.530404</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>51531</td>
+      <td>Barking Rail Station</td>
+      <td>0.081067</td>
+      <td>51.539406</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>51530</td>
+      <td>Barking Station Junction</td>
+      <td>0.073137</td>
+      <td>51.542613</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>51014</td>
+      <td>Benfleet Rail Station</td>
+      <td>0.562470</td>
+      <td>51.543636</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>51016</td>
+      <td>Pitsea Rail Station</td>
+      <td>0.508825</td>
+      <td>51.559563</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>51019</td>
+      <td>Basildon Rail Station</td>
+      <td>0.457332</td>
+      <td>51.568129</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>51301</td>
+      <td>Laindon Rail Station</td>
+      <td>0.426086</td>
+      <td>51.566754</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>51305</td>
+      <td>West Horndon Rail Station</td>
+      <td>0.342149</td>
+      <td>51.567120</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>51351</td>
+      <td>Upminster Rail Station</td>
+      <td>0.253761</td>
+      <td>51.558050</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>52702</td>
+      <td>West Ham Rail Station</td>
+      <td>0.006511</td>
+      <td>51.527621</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>52703</td>
+      <td>Gas Factory Junction</td>
+      <td>-0.022412</td>
+      <td>51.522573</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>52705</td>
+      <td>Limehouse Rail Station</td>
+      <td>-0.038208</td>
+      <td>51.511930</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>52707</td>
+      <td>Christian Street Junction</td>
+      <td>-0.061245</td>
+      <td>51.510766</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>52711</td>
+      <td>London Fenchurch Street Rail Station</td>
+      <td>-0.076138</td>
+      <td>51.510624</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>51602</td>
+      <td>East Ham Electric Multiple Unit Depot</td>
+      <td>0.068475</td>
+      <td>51.543487</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>51003</td>
+      <td>Shoeburyness Carriage Servicing Depot</td>
+      <td>0.793755</td>
+      <td>51.531598</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>51309</td>
+      <td>Ockendon Rail Station</td>
+      <td>0.291612</td>
+      <td>51.521182</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>51313</td>
+      <td>Chafford Hundred Rail Station</td>
+      <td>0.288822</td>
+      <td>51.484805</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>52704</td>
+      <td>Gas Factory Loop</td>
+      <td>-0.028290</td>
+      <td>51.518328</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pio</span><span class="o">.</span><span class="n">renderers</span>
+<span class="n">pio</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;notebook_connected&quot;</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">go</span><span class="o">.</span><span class="n">Scattergeo</span><span class="p">(</span>
+        <span class="n">lon</span> <span class="o">=</span> <span class="n">stanox_map_data</span><span class="p">[</span><span class="s1">&#39;LONGITUDE&#39;</span><span class="p">],</span>
+        <span class="n">lat</span> <span class="o">=</span> <span class="n">stanox_map_data</span><span class="p">[</span><span class="s1">&#39;LATITUDE&#39;</span><span class="p">],</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">stanox_map_data</span><span class="p">[</span><span class="s1">&#39;dataset_stations&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; : &#39;</span> <span class="o">+</span><span class="n">stanox_map_data</span><span class="p">[</span><span class="s1">&#39;StationName&#39;</span><span class="p">],</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;markers&#39;</span><span class="p">,</span>
+        <span class="p">))</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Some Public Transport Stops UK&lt;br&gt;(Hover for names)&#39;</span><span class="p">,</span>
+        <span class="n">geo_scope</span><span class="o">=</span><span class="s1">&#39;europe&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><script type="text/javascript">
+window.PlotlyConfig = {MathJaxConfig: 'local'};
+if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
+if (typeof require !== 'undefined') {
+require.undef("plotly");
+requirejs.config({
+    paths: {
+        'plotly': ['https://cdn.plot.ly/plotly-2.14.0.min']
+    }
+});
+require(['plotly'], function(Plotly) {
+    window._Plotly = Plotly;
+});
+}
+</script>
+</div><div class="output text_html"><div>                            <div id="cd0c12c9-8f21-4aed-8a5d-41a9a8b94d97" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("cd0c12c9-8f21-4aed-8a5d-41a9a8b94d97")) {                    Plotly.newPlot(                        "cd0c12c9-8f21-4aed-8a5d-41a9a8b94d97",                        [{"lat":[51.54120825152502,51.53790152,51.53667183,51.53721361264267,51.53814392,51.5368946,51.53397602,51.53040424,51.53940643,51.54261347,51.54363554,51.55956297,51.5681286353167,51.56675367,51.56711975,51.55805044,51.52762092,51.52257258,51.51192952,51.51076588,51.51062448,51.54348716,51.53159832,51.52118204,51.48480458,51.51832799],"lon":[0.6406116596973183,0.67031199,0.69301184,0.710359938504039,0.73239941,0.76344711,0.78568063,0.79630632,0.08106727,0.07313721,0.56246983,0.50882544,0.4573321689628452,0.42608627,0.34214857,0.25376115,0.00651108,-0.02241242,-0.03820808,-0.06124494,-0.07613828,0.06847522,0.79375502,0.29161216,0.28882226,-0.02828996],"mode":"markers","text":["51013 : Leigh-on-Sea Rail Station","51011 : Chalkwell Rail Station","51009 : Westcliff-on-Sea Rail Station","51007 : Southend Central Rail Station","51005 : Southend East Rail Station","51004 : Thorpe Bay Rail Station","50499 : Shoeburyness Depot London End Junction","51001 : Shoeburyness Rail Station","51531 : Barking Rail Station","51530 : Barking Station Junction","51014 : Benfleet Rail Station","51016 : Pitsea Rail Station","51019 : Basildon Rail Station","51301 : Laindon Rail Station","51305 : West Horndon Rail Station","51351 : Upminster Rail Station","52702 : West Ham Rail Station","52703 : Gas Factory Junction","52705 : Limehouse Rail Station","52707 : Christian Street Junction","52711 : London Fenchurch Street Rail Station","51602 : East Ham Electric Multiple Unit Depot","51003 : Shoeburyness Carriage Servicing Depot","51309 : Ockendon Rail Station","51313 : Chafford Hundred Rail Station","52704 : Gas Factory Loop"],"type":"scattergeo"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"geo":{"scope":"europe"},"title":{"text":"Some Public Transport Stops UK<br>(Hover for names)"}},                        {"responsive": true}                    ).then(function(){
+
+var gd = document.getElementById('cd0c12c9-8f21-4aed-8a5d-41a9a8b94d97');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div></div></div>
+</div>
+<p>The above visualisation isn’t perfect, but it serves its purpose. You can zoom into the UK and see roughly where each station is on the map and that they are all in the area west of London.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># store variables for next notebook</span>
+<span class="o">%</span><span class="k">store</span> train_timings
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Stored &#39;train_timings&#39; (DataFrame)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='right-next' id="next-link" href="DataCleaning.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Data Cleaning</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Ivan Fitzpatrick<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
